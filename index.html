@@ -4,166 +4,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Registro</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <style>
-        body {
-            background-color: #191414;
-            /* Fondo oscuro tipo Spotify */
-            color: white;
-            font-family: 'Arial', sans-serif;
-        }
-
-        .container {
-            max-width: 600px;
-            margin-top: 50px;
-        }
-
-        h2 {
-            text-align: center;
-            color: #1DB954;
-            /* Verde Spotify */
-        }
-
-        .btn-primary {
-            background-color: #1DB954;
-            border: none;
-        }
-
-        .btn-primary:hover {
-            background-color: #1ed760;
-        }
-
-        .table {
-            margin-top: 30px;
-            background-color: #333;
-            color: white;
-        }
-
-        .table th,
-        .table td {
-            text-align: center;
-        }
-    </style>
+    <title>Pagina de ejemplo</title>
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
-
-    <div class="container">
-        <h2>Formulario de Registro</h2>
-        <form id="registroForm">
+    <div class="container mt-5">
+        <h2 class="mb-4 text-primary">Formulario de Registro</h2>
+        <form id="registroForm" class="p-4 rounded shadow bg-light">
             <div class="mb-3">
-                <label for="nombre" class="form-label">Nombre:</label>
-                <input type="text" id="nombre" class="form-control" required>
+                <label for="nombre" class="form-label text-success">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" class="form-control border-success" required>
             </div>
             <div class="mb-3">
-                <label for="apellido" class="form-label">Apellido:</label>
-                <input type="text" id="apellido" class="form-control" required>
+                <label for="apellido" class="form-label text-success">Apellido:</label>
+                <input type="text" id="apellido" name="apellido" class="form-control border-success" required>
             </div>
             <div class="mb-3">
-                <label for="email" class="form-label">Correo electrónico:</label>
-                <input type="email" id="email" class="form-control" required>
+                <label for="email" class="form-label text-info">Correo electrónico:</label>
+                <input type="email" id="email" name="email" class="form-control border-info" required>
             </div>
             <div class="mb-3">
-                <label for="fecha_nacimiento" class="form-label">Fecha de nacimiento:</label>
-                <input type="date" id="fecha_nacimiento" class="form-control" required>
+                <label for="fecha_nacimiento" class="form-label text-warning">Fecha de nacimiento:</label>
+                <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" class="form-control border-warning" required>
             </div>
             <div class="mb-3">
-                <label for="password" class="form-label">Contraseña:</label>
-                <input type="password" id="password" class="form-control" required>
+                <label for="password" class="form-label text-danger">Contraseña:</label>
+                <input type="password" id="password" name="password" class="form-control border-danger" required>
             </div>
-            <button type="submit" class="btn btn-primary">Registrarse</button>
+            <button type="submit" class="btn btn-success">Registrarse</button>
         </form>
 
-        <table class="table table-bordered mt-5" id="tablaRegistros">
-            <thead>
+        <h3 class="mt-5 text-primary">Usuarios Registrados</h3>
+        <table class="table table-bordered table-striped table-hover bg-white" id="usuariosTabla">
+            <thead class="table-dark">
                 <tr>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Email</th>
-                    <th>Fecha Nacimiento</th>
-                    <th>Contraseña</th>
+                    <th class="text-success">Nombre</th>
+                    <th class="text-success">Apellido</th>
+                    <th class="text-info">Correo electrónico</th>
+                    <th class="text-warning">Fecha de nacimiento</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Aquí se agregarán los registros -->
+                <!-- Los datos se insertarán aquí -->
             </tbody>
         </table>
     </div>
-
     <script>
-        // Función para guardar datos en localStorage
-        function guardarDatos(event) {
-            event.preventDefault();
-
-            // Obtener los valores del formulario
-            const nombre = document.getElementById("nombre").value;
-            const apellido = document.getElementById("apellido").value;
-            const email = document.getElementById("email").value;
-            const fechaNacimiento = document.getElementById("fecha_nacimiento").value;
-            const password = document.getElementById("password").value;
-
-            // Crear objeto con los datos
-            const usuario = {
-                nombre,
-                apellido,
-                email,
-                fechaNacimiento,
-                password
-            };
-
-            // Obtener los datos del localStorage
-            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-
-            // Agregar el nuevo usuario al array
-            usuarios.push(usuario);
-
-            // Guardar los datos nuevamente en localStorage
-            localStorage.setItem('usuarios', JSON.stringify(usuarios));
-
-            // Mostrar los datos en la tabla
-            mostrarTabla();
-
-            // Limpiar el formulario
-            document.getElementById("registroForm").reset();
-        }
-
-        // Función para mostrar los registros en la tabla
-        function mostrarTabla() {
-            // Obtener los registros desde localStorage
-            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-
-            // Obtener el cuerpo de la tabla
-            const tablaBody = document.getElementById("tablaRegistros").getElementsByTagName('tbody')[0];
-
-            // Limpiar la tabla antes de agregar los nuevos registros
-            tablaBody.innerHTML = '';
-
-            // Recorrer los registros y agregarlos a la tabla
+        function cargarUsuarios() {
+            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            const tbody = document.querySelector('#usuariosTabla tbody');
+            tbody.innerHTML = '';
             usuarios.forEach(usuario => {
-                let fila = tablaBody.insertRow();
+                const fila = document.createElement('tr');
                 fila.innerHTML = `
                     <td>${usuario.nombre}</td>
                     <td>${usuario.apellido}</td>
                     <td>${usuario.email}</td>
-                    <td>${usuario.fechaNacimiento}</td>
-                    <td>${usuario.password}</td>
+                    <td>${usuario.fecha_nacimiento}</td>
                 `;
+                tbody.appendChild(fila);
             });
         }
 
-        // Escuchar el evento submit del formulario
-        document.getElementById("registroForm").addEventListener("submit", guardarDatos);
+        document.getElementById('registroForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const usuario = {
+                nombre: document.getElementById('nombre').value,
+                apellido: document.getElementById('apellido').value,
+                email: document.getElementById('email').value,
+                fecha_nacimiento: document.getElementById('fecha_nacimiento').value,
+                password: document.getElementById('password').value // No se muestra en la tabla
+            };
+            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            usuarios.push(usuario);
+            localStorage.setItem('usuarios', JSON.stringify(usuarios));
+            cargarUsuarios();
+            this.reset();
+        });
 
-        // Cargar los datos de localStorage al cargar la página
-        window.onload = mostrarTabla;
+        window.onload = cargarUsuarios;
     </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"></script>
-
 </body>
 
 </html>
