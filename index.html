@@ -53,80 +53,10 @@
             </tbody>
         </table>
     </div>
-
-    <script>
-        function cargarUsuarios() {
-            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-            const tbody = document.querySelector('#usuariosTabla tbody');
-            tbody.innerHTML = '';
-            usuarios.forEach((usuario, index) => {
-                const fila = document.createElement('tr');
-                fila.innerHTML = `
-                    <td>${usuario.nombre}</td>
-                    <td>${usuario.apellido}</td>
-                    <td>${usuario.email}</td>
-                    <td>${usuario.fecha_nacimiento}</td>
-                    <td>
-                        <button class="btn btn-sm btn-primary me-2" onclick="editarUsuario(${index})">Editar</button>
-                        <button class="btn btn-sm btn-danger" onclick="eliminarUsuario(${index})">Eliminar</button>
-                    </td>
-                `;
-                tbody.appendChild(fila);
-            });
-        }
-
-        document.getElementById('registroForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const editIndex = document.getElementById('editIndex').value;
-            const usuario = {
-                nombre: document.getElementById('nombre').value,
-                apellido: document.getElementById('apellido').value,
-                email: document.getElementById('email').value,
-                fecha_nacimiento: document.getElementById('fecha_nacimiento').value,
-                password: document.getElementById('password').value
-            };
-
-            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-
-            if (editIndex === "-1") {
-                // Agregar nuevo usuario
-                usuarios.push(usuario);
-            } else {
-                // Editar usuario existente
-                usuarios[editIndex] = usuario;
-                document.getElementById('editIndex').value = -1;
-            }
-
-            localStorage.setItem('usuarios', JSON.stringify(usuarios));
-            cargarUsuarios();
-            this.reset();
-        });
-
-        function eliminarUsuario(index) {
-            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-            if (confirm("¿Estás seguro de eliminar este usuario?")) {
-                usuarios.splice(index, 1);
-                localStorage.setItem('usuarios', JSON.stringify(usuarios));
-                cargarUsuarios();
-            }
-        }
-
-        function editarUsuario(index) {
-            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-            const usuario = usuarios[index];
-
-            document.getElementById('nombre').value = usuario.nombre;
-            document.getElementById('apellido').value = usuario.apellido;
-            document.getElementById('email').value = usuario.email;
-            document.getElementById('fecha_nacimiento').value = usuario.fecha_nacimiento;
-            document.getElementById('password').value = usuario.password;
-            document.getElementById('editIndex').value = index;
-        }
-
-        // Cargar usuarios al cargar la página
-        window.onload = cargarUsuarios;
-    </script>
+<script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
