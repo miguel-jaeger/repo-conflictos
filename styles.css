@@ -1,0 +1,35 @@
+body {
+    background-color: #191414;
+    color: white;
+    font-family: 'Arial', sans-serif;
+}
+
+.container {
+    max-width: 600px;
+    margin-top: 50px;
+}
+
+h2 {
+    text-align: center;
+    color: #1DB954;
+}
+
+.btn-primary {
+    background-color: #1DB954;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #1ed760;
+}
+
+.table {
+    margin-top: 30px;
+    background-color: #333;
+    color: white;
+}
+
+.table th,
+.table td {
+    text-align: center;
+}
