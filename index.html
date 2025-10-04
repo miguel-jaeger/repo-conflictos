@@ -13,6 +13,7 @@
     <div class="container mt-5">
         <h2 class="mb-4 text-primary">Formulario de Registro</h2>
         <form id="registroForm" class="p-4 rounded shadow bg-light">
+            <input type="hidden" id="editIndex" value="-1"> <!-- Para edición -->
             <div class="mb-3">
                 <label for="nombre" class="form-label text-success">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" class="form-control border-success" required>
@@ -33,7 +34,7 @@
                 <label for="password" class="form-label text-danger">Contraseña:</label>
                 <input type="password" id="password" name="password" class="form-control border-danger" required>
             </div>
-            <button type="submit" class="btn btn-success">Registrarse</button>
+            <button type="submit" class="btn btn-success">Guardar</button>
         </form>
 
         <h3 class="mt-5 text-primary">Usuarios Registrados</h3>
@@ -44,6 +45,7 @@
                     <th class="text-success">Apellido</th>
                     <th class="text-info">Correo electrónico</th>
                     <th class="text-warning">Fecha de nacimiento</th>
+                    <th class="text-danger">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -51,18 +53,23 @@
             </tbody>
         </table>
     </div>
+
     <script>
         function cargarUsuarios() {
             const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
             const tbody = document.querySelector('#usuariosTabla tbody');
             tbody.innerHTML = '';
-            usuarios.forEach(usuario => {
+            usuarios.forEach((usuario, index) => {
                 const fila = document.createElement('tr');
                 fila.innerHTML = `
                     <td>${usuario.nombre}</td>
                     <td>${usuario.apellido}</td>
                     <td>${usuario.email}</td>
                     <td>${usuario.fecha_nacimiento}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary me-2" onclick="editarUsuario(${index})">Editar</button>
+                        <button class="btn btn-sm btn-danger" onclick="eliminarUsuario(${index})">Eliminar</button>
+                    </td>
                 `;
                 tbody.appendChild(fila);
             });
@@ -70,20 +77,54 @@
 
         document.getElementById('registroForm').addEventListener('submit', function(e) {
             e.preventDefault();
+
+            const editIndex = document.getElementById('editIndex').value;
             const usuario = {
                 nombre: document.getElementById('nombre').value,
                 apellido: document.getElementById('apellido').value,
                 email: document.getElementById('email').value,
                 fecha_nacimiento: document.getElementById('fecha_nacimiento').value,
-                password: document.getElementById('password').value // No se muestra en la tabla
+                password: document.getElementById('password').value
             };
-            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-            usuarios.push(usuario);
+
+            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+
+            if (editIndex === "-1") {
+                // Agregar nuevo usuario
+                usuarios.push(usuario);
+            } else {
+                // Editar usuario existente
+                usuarios[editIndex] = usuario;
+                document.getElementById('editIndex').value = -1;
+            }
+
             localStorage.setItem('usuarios', JSON.stringify(usuarios));
             cargarUsuarios();
             this.reset();
         });
 
+        function eliminarUsuario(index) {
+            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            if (confirm("¿Estás seguro de eliminar este usuario?")) {
+                usuarios.splice(index, 1);
+                localStorage.setItem('usuarios', JSON.stringify(usuarios));
+                cargarUsuarios();
+            }
+        }
+
+        function editarUsuario(index) {
+            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            const usuario = usuarios[index];
+
+            document.getElementById('nombre').value = usuario.nombre;
+            document.getElementById('apellido').value = usuario.apellido;
+            document.getElementById('email').value = usuario.email;
+            document.getElementById('fecha_nacimiento').value = usuario.fecha_nacimiento;
+            document.getElementById('password').value = usuario.password;
+            document.getElementById('editIndex').value = index;
+        }
+
+        // Cargar usuarios al cargar la página
         window.onload = cargarUsuarios;
     </script>
 </body>
