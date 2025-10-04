@@ -14,6 +14,7 @@
     <div class="container mt-5">
         <h2 class="mb-4 text-primary">Formulario de Registro</h2>
         <form id="registroForm" class="p-4 rounded shadow bg-light">
+            <input type="hidden" id="editIndex" value="-1"> <!-- Para edición -->
             <div class="mb-3">
                 <label for="nombre" class="form-label text-success">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" class="form-control border-success" required>
@@ -35,7 +36,7 @@
                 <label for="password" class="form-label text-danger">Contraseña:</label>
                 <input type="password" id="password" name="password" class="form-control border-danger" required>
             </div>
-            <button type="submit" class="btn btn-success">Registrarse</button>
+            <button type="submit" class="btn btn-success">Guardar</button>
         </form>
 
         <h3 class="mt-5 text-primary">Usuarios Registrados</h3>
