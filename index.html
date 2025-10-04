@@ -7,47 +7,8 @@
     <title>Página de Registro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <style>
-        body {
-            background-color: #191414;
-            /* Fondo oscuro tipo Spotify */
-            color: white;
-            font-family: 'Arial', sans-serif;
-        }
-
-        .container {
-            max-width: 600px;
-            margin-top: 50px;
-        }
-
-        h2 {
-            text-align: center;
-            color: #1DB954;
-            /* Verde Spotify */
-        }
-
-        .btn-primary {
-            background-color: #1DB954;
-            border: none;
-        }
-
-        .btn-primary:hover {
-            background-color: #1ed760;
-        }
-
-        .table {
-            margin-top: 30px;
-            background-color: #333;
-            color: white;
-        }
-
-        .table th,
-        .table td {
-            text-align: center;
-        }
-    </style>
-</head>
-
+    <link rel="stylesheet" href="styles.css">
+    </head>
 <body>
 
     <div class="container">
@@ -91,79 +52,10 @@
             </tbody>
         </table>
     </div>
-
-    <script>
-        // Función para guardar datos en localStorage
-        function guardarDatos(event) {
-            event.preventDefault();
-
-            // Obtener los valores del formulario
-            const nombre = document.getElementById("nombre").value;
-            const apellido = document.getElementById("apellido").value;
-            const email = document.getElementById("email").value;
-            const fechaNacimiento = document.getElementById("fecha_nacimiento").value;
-            const password = document.getElementById("password").value;
-
-            // Crear objeto con los datos
-            const usuario = {
-                nombre,
-                apellido,
-                email,
-                fechaNacimiento,
-                password
-            };
-
-            // Obtener los datos del localStorage
-            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-
-            // Agregar el nuevo usuario al array
-            usuarios.push(usuario);
-
-            // Guardar los datos nuevamente en localStorage
-            localStorage.setItem('usuarios', JSON.stringify(usuarios));
-
-            // Mostrar los datos en la tabla
-            mostrarTabla();
-
-            // Limpiar el formulario
-            document.getElementById("registroForm").reset();
-        }
-
-        // Función para mostrar los registros en la tabla
-        function mostrarTabla() {
-            // Obtener los registros desde localStorage
-            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-
-            // Obtener el cuerpo de la tabla
-            const tablaBody = document.getElementById("tablaRegistros").getElementsByTagName('tbody')[0];
-
-            // Limpiar la tabla antes de agregar los nuevos registros
-            tablaBody.innerHTML = '';
-
-            // Recorrer los registros y agregarlos a la tabla
-            usuarios.forEach(usuario => {
-                let fila = tablaBody.insertRow();
-                fila.innerHTML = `
-                    <td>${usuario.nombre}</td>
-                    <td>${usuario.apellido}</td>
-                    <td>${usuario.email}</td>
-                    <td>${usuario.fechaNacimiento}</td>
-                    <td>${usuario.password}</td>
-                `;
-            });
-        }
-
-        // Escuchar el evento submit del formulario
-        document.getElementById("registroForm").addEventListener("submit", guardarDatos);
-
-        // Cargar los datos de localStorage al cargar la página
-        window.onload = mostrarTabla;
-    </script>
-
+<script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
-
 </body>
 
 </html>
